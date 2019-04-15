@@ -1,4 +1,8 @@
 <?php
+namespace App\Core;
+
+use App;
+use App\Core;
 /**
  * Created by PhpStorm.
  * User: Engr. Syed Rowshan Ali
@@ -10,6 +14,8 @@
  *  This class will be available to the controller
  *
 */
+
+
 class Error {
 	private static $instance = null;    //Singleton Instance
 
@@ -22,7 +28,7 @@ class Error {
 	{
 		if (self::$instance == null)
 		{
-			self::$instance = new Error();
+			self::$instance = new Core\Error();
 		}
 
 		return self::$instance;

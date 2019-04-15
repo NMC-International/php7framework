@@ -1,4 +1,7 @@
 <?php
+
+namespace App;
+
 /**
  * Created by PhpStorm.
  * User: rowshan
@@ -26,18 +29,21 @@ require_once '../config/paths.inc.php';
 require_once '../config/security.inc.php';
 
 require_once CORE_PATH . '/' . 'Error.php';
-$error = Error::getInstance();
+
+use App\Core;
+
+$error = Core\Error::getInstance();
 
 /* Request Class */
 require_once CORE_PATH . '/' . 'Request.php';
-$request = Request::getInstance();
+$request = Core\Request::getInstance();
 
 //Router Class
 require_once CORE_PATH . '/' . 'Router.php';
-$router = Router::getInstance();
+$router = Core\Router::getInstance();
 
 //Loader Class
 require_once CORE_PATH . '/' . 'Loader.php';
-$loader = Loader::getInstance();
+$loader = Core\Loader::getInstance();
 
 

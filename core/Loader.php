@@ -1,4 +1,5 @@
 <?php
+namespace App\Core;
 /**
  * Created by PhpStorm.
  * User: Engr. Syed Rowshan Ali
