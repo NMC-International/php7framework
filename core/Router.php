@@ -1,5 +1,6 @@
 <?php
 namespace App\Core;
+use App;
 /**
  * Created by PhpStorm.
  * User: rowshan
@@ -13,19 +14,26 @@ class Router{
 	private $_method;
 	private $_parameters;
 	private $_uri;
+	private $_loader = null;
+	private $_config;
 
 	private function __construct()
 	{
-		$request = Request::getInstance();
 
-		$this->_uri = ltrim($request->uri(),'/');
+	    if($this->_loader == null){
+	        $this->_loader = Loader::getInstance();
+
+	        $this->_config = $this->_loader->load_config('router');
+        }
+
+		$this->_uri = ltrim($_SERVER['REQUEST_URI'],'/');
 		$part  = explode('/',$this->_uri,3);
 
 		$c = count($part);
 		switch ($c){
 			case 1:
-				$part[0] == '' ? $this->_controller = 'Default_C' : $this->_controller = $part[0];
-				$this->_method = 'index';
+				$part[0] == '' ? $this->_controller = $this->_config['default_controller'] : $this->_controller = $part[0];
+				$this->_method = $this->_config['default_method'];
 				$this->_parameters = null;
 				break;
 			case 2:

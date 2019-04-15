@@ -3,8 +3,7 @@
 namespace App;
 
 /**
- * Created by PhpStorm.
- * User: rowshan
+ * User: Engr. Syed Rowshan Ali
  * Date: 15-Apr-19
  * Time: 12:20 PM
  * @package	Php 7 Framework
@@ -19,31 +18,22 @@ namespace App;
  * DEBUG = true; show debugging message, error message
  * DEBUG = false; hide all debugging message, error message
  */
+
+//At first load the debugging an error reporting feature
 define('DEBUG',true);
 require_once '../config/error.inc.php';
 
-/* Setting Path Constants*/
+/* Setting Path Constants Globally*/
 require_once '../config/paths.inc.php';
-
-/* Load security config file */
-require_once '../config/security.inc.php';
-
-require_once CORE_PATH . '/' . 'Error.php';
 
 use App\Core;
 
-$error = Core\Error::getInstance();
-
-/* Request Class */
-require_once CORE_PATH . '/' . 'Request.php';
-$request = Core\Request::getInstance();
-
-//Router Class
-require_once CORE_PATH . '/' . 'Router.php';
-$router = Core\Router::getInstance();
-
-//Loader Class
+//The main Loader Class
 require_once CORE_PATH . '/' . 'Loader.php';
 $loader = Core\Loader::getInstance();
 
+$loader->load_core('error');
+$error = Core\Error::getInstance();
+
+$loader->load_controller();
 

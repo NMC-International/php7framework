@@ -1,5 +1,6 @@
 <?php
 namespace App\Core;
+
 /**
  * Created by PhpStorm.
  * User: Engr. Syed Rowshan Ali
@@ -10,18 +11,51 @@ namespace App\Core;
 class Loader{
 	static protected $instance;     //Singleton Instance
 	private $_router;               //Router to the Class
-	private $_error;                //Error to the class
-	private $_core;
+	private $_error;             //Error to the class
+	private $_core = array();
+	private $_config = array();
 
 	private function __construct()
 	{
 		//Loading Router and the Error Class
-        $this->_router = Router::getInstance();
-        $this->_error = Error::getInstance();
+        if($this->_error == null){
+            Loader::load_core('error');
+            $this->_error = Error::getInstance();
+        }
+        //$this->_error = Error::getInstance();
 
         //Load the controller at this stage
-        $this->load_controller();
+        //$this->load_controller();
 	}
+
+    /**
+     * @param $config
+     * This function will load any config file exist into the config director
+     */
+	public function load_config($con){
+        if( ! in_array($con,$this->_config)){
+            $config_path = CONFIG_PATH . '/' . strtolower($con).'.inc.php';
+            if(file_exists($config_path)){
+                include $config_path;
+                return $config;
+            }
+        }
+    }
+
+    /**
+     * @param $core
+     * This function will load core classes from Core Folder
+     */
+    public function load_core($core){
+        if( ! in_array($core,$this->_core)){
+            $core_path = CORE_PATH . '/' . ucfirst($core).'.php';
+            if(file_exists($core_path)){
+                require_once $core_path;
+                //Load the config
+            }
+        }
+    }
+
 
 	/**
 	 * @param null $controller
@@ -29,6 +63,12 @@ class Loader{
 	 */
 	public function load_controller($controller = null){
 		if($controller == null){
+
+		    if($this->_router == null){
+		        $this->load_core('router');
+		        $this->_router = Router::getInstance();
+            }
+
 			//Get Controller and Method Name
 			$controller = $this->_router->controller();
 			$method = ucfirst($this->_router->method());
@@ -60,10 +100,6 @@ class Loader{
 				$this->_error->show_404('Controller File Not Found');
 			}
 		}
-	}
-
-	public function load_core($core){
-
 	}
 
 	public static function getInstance()
