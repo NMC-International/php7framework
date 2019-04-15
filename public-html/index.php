@@ -22,6 +22,9 @@ require_once '../config/error.inc.php';
 /* Setting Path Constants*/
 require_once '../config/paths.inc.php';
 
+/* Load security config file */
+require_once '../config/security.inc.php';
+
 require_once CORE_PATH . '/' . 'Error.php';
 $error = Error::getInstance();
 

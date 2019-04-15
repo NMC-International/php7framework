@@ -37,10 +37,11 @@ class Request {
 		$this->_remote_ip = $_SERVER['REMOTE_ADDR'];
 		$this->_uri = $_SERVER['REQUEST_URI'];
 
-		//Cleanup
+		//Security Cleanup
 		unset($_GET);
 		unset($_POST);
 		unset($_REQUEST);
+		unset($_GLOBAL);
 	}
 
 	public static function getInstance()

@@ -10,6 +10,7 @@ class Loader{
 	static protected $instance;     //Singleton Instance
 	private $_router;               //Router to the Class
 	private $_error;                //Error to the class
+	private $_core;
 
 	private function __construct()
 	{
@@ -58,6 +59,10 @@ class Loader{
 				$this->_error->show_404('Controller File Not Found');
 			}
 		}
+	}
+
+	public function load_core($core){
+
 	}
 
 	public static function getInstance()
