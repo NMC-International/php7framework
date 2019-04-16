@@ -1,6 +1,7 @@
 <?php
 
-namespace App;
+namespace Php7;
+use Php7;
 
 /**
  * User: Engr. Syed Rowshan Ali
@@ -26,14 +27,10 @@ require_once '../config/error.inc.php';
 /* Setting Path Constants Globally*/
 require_once '../config/paths.inc.php';
 
-use App\Core;
-
 //The main Loader Class
-require_once CORE_PATH . '/' . 'Loader.php';
-$loader = Core\Loader::getInstance();
+require_once CORE_PATH . '/' . 'App.php';
+$App = App::getInstance();
+$App2 = App::getInstance();
 
-$loader->load_core('error');
-$error = Core\Error::getInstance();
 
-$loader->load_controller();
 

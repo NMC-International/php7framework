@@ -1,6 +1,6 @@
 <?php
-namespace App\Core;
-use App;
+namespace Php7;
+use Php7;
 /**
  * Created by PhpStorm.
  * User: rowshan
@@ -23,7 +23,7 @@ class Router{
 	    if($this->_loader == null){
 	        $this->_loader = Loader::getInstance();
 
-	        $this->_config = $this->_loader->load_config('router');
+	        $this->_config = $this->_loader->config('router');
         }
 
 		$this->_uri = ltrim($_SERVER['REQUEST_URI'],'/');

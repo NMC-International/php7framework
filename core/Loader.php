@@ -1,5 +1,6 @@
 <?php
-namespace App\Core;
+namespace Php7;
+use Php7;
 
 /**
  * Created by PhpStorm.
@@ -17,41 +18,43 @@ class Loader{
 
 	private function __construct()
 	{
-		//Loading Router and the Error Class
-        if($this->_error == null){
-            Loader::load_core('error');
-            $this->_error = Error::getInstance();
-        }
-        //$this->_error = Error::getInstance();
 
-        //Load the controller at this stage
-        //$this->load_controller();
 	}
 
     /**
      * @param $config
      * This function will load any config file exist into the config director
      */
-	public function load_config($con){
-        if( ! in_array($con,$this->_config)){
-            $config_path = CONFIG_PATH . '/' . strtolower($con).'.inc.php';
+	public function config($config_file_name){
+		//$app = App::getInstance();
+
+
+        if( ! in_array($config_file_name,$this->_config)){
+            $config_path = CONFIG_PATH . '/' . strtolower($config_file_name).'.inc.php';
             if(file_exists($config_path)){
-                include $config_path;
-                return $config;
+				include $config_path;
+				$app->config = array_merge($config);
+				return;
             }
         }
     }
 
     /**
      * @param $core
+	 * @param $config = true
      * This function will load core classes from Core Folder
      */
-    public function load_core($core){
+    public function core($core,$config = true){
+		if($config){
+			$this->config($core);
+		}
+
         if( ! in_array($core,$this->_core)){
             $core_path = CORE_PATH . '/' . ucfirst($core).'.php';
             if(file_exists($core_path)){
-                require_once $core_path;
-                //Load the config
+				require_once $core_path;
+				$classname = __NAMESPACE__ . '\\' . ucfirst($core);
+                return  $classname::getInstance();
             }
         }
     }
@@ -61,11 +64,11 @@ class Loader{
 	 * @param null $controller
 	 * Load Default Controller by the router class
 	 */
-	public function load_controller($controller = null){
+	public function controller($controller = null){
 		if($controller == null){
 
 		    if($this->_router == null){
-		        $this->load_core('router');
+		        $this->core('router');
 		        $this->_router = Router::getInstance();
             }
 

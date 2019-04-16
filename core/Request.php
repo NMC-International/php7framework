@@ -1,5 +1,5 @@
 <?php
-namespace App\Core;
+namespace Php7;
 /**
  * Created by PhpStorm.
  * User: rowshan
