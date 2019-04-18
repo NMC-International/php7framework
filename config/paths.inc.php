@@ -1,4 +1,5 @@
 <?php
+namespace App;
 /**
  * Created by PhpStorm.
  * User: rowshan

@@ -1,7 +1,10 @@
 <?php
+
+namespace Php7;
+use Php7;
+
 /**
- * Created by PhpStorm.
- * User: rowshan
+ * User: Engr. Syed Rowshan Ali
  * Date: 15-Apr-19
  * Time: 12:20 PM
  * @package	Php 7 Framework
@@ -16,25 +19,23 @@
  * DEBUG = true; show debugging message, error message
  * DEBUG = false; hide all debugging message, error message
  */
+
+//At first load the debugging an error reporting feature
 define('DEBUG',true);
 require_once '../config/error.inc.php';
 
-/* Setting Path Constants*/
+/* Setting Path Constants Globally*/
 require_once '../config/paths.inc.php';
 
-require_once CORE_PATH . '/' . 'Error.php';
-$error = Error::getInstance();
+//The main Loader Class
+require_once CORE_PATH . '/' . 'App.php';
 
-/* Request Class */
-require_once CORE_PATH . '/' . 'Request.php';
-$request = Request::getInstance();
+$App = App::getInstance();
 
-//Router Class
-require_once CORE_PATH . '/' . 'Router.php';
-$router = Router::getInstance();
+$request = $App->load->core('request');
+$router = $App->load->core('router');
 
-//Loader Class
-require_once CORE_PATH . '/' . 'Loader.php';
-$loader = Loader::getInstance();
+var_dump($App);
+
 
 
