@@ -6,12 +6,12 @@ For a long time I wanted to develop a Php framework by myself.  All the existing
 
 # Founder & Contributor
 
-:octocat:[Engr. Syed Rowshan Ali](https://github.com/Engr-Rowshan)
+:octocat: [Engr. Syed Rowshan Ali](https://github.com/Engr-Rowshan)
 
 # Development Life Line
 There will be two main branch
-* **master** 
-* **development**
+* [**master**](https://github.com/Engr-Rowshan/php7framework/tree/master)
+* [**development**](https://github.com/Engr-Rowshan/php7framework/tree/development) 
 
 All the development will be done in **development** branch. Only stable branch will be merged to **master**.
 
