@@ -6,8 +6,8 @@
  * Date: 15-Apr-19
  * Time: 4:01 PM
  */
-class Default_C {
+class Default_C extends Php7\Controller{
 	public function Index(){
-		echo 'I am hit';
+		echo 'Hello World';
 	}
 }

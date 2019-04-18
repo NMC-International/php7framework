@@ -37,21 +37,27 @@ class Loader implements Singelton{
 	}
 
     /**
-     * @param $config
+     * @param $config_file_name
      * This function will load any config file exist into the config director
      */
-	public function config($config_file_name){
-		//$app = App::getInstance();
+	public function config($config_file_name) : array{
+		//Check is the config file loaded before
+        if( ! in_array($config_file_name,$this->_config )){
+			//Get the file path
+			$config_path = CONFIG_PATH . '/' . strtolower($config_file_name).'.inc.php';
+			
+			//Check if any config file exist
+            if(file_exists($config_path)){
+				//Add the file
+				include $config_path;
 
-
-        // if( ! in_array($config_file_name,$this->_config)){
-        //     $config_path = CONFIG_PATH . '/' . strtolower($config_file_name).'.inc.php';
-        //     if(file_exists($config_path)){
-		// 		include $config_path;
-		// 		$app->config = array_merge($config);
-		// 		return;
-        //     }
-        // }
+				$this->_app->config = array_merge($this->_app->config,$config);
+				return $config;
+			}else{
+				return array();
+			}
+			
+        }
     }
 
     /**
@@ -59,10 +65,10 @@ class Loader implements Singelton{
 	 * @param $config = true
      * This function will load core classes from Core Folder
      */
-    public function core($core,$config = true){
-		// if($config){
-		// 	$this->config($core);
-		// }
+    public function core($core,$config = true) : object{
+		if($config){
+			$this->config($core);
+		}
 
         if( ! in_array($core,$this->_core)){
             $core_path = CORE_PATH . '/' . ucfirst($core).'.php';
@@ -80,18 +86,13 @@ class Loader implements Singelton{
 	 * @param null $controller
 	 * Load Default Controller by the router class
 	 */
-	public function controller($controller = null){
+	public function controller($controller = null) : void{
 		if($controller == null){
 
-		    if($this->_router == null){
-		        $this->core('router');
-		        $this->_router = Router::getInstance();
-            }
-
 			//Get Controller and Method Name
-			$controller = $this->_router->controller();
-			$method = ucfirst($this->_router->method());
-			$parameters = $this->_router->parameters();
+			$controller = $this->_app->router->controller();
+			$method = ucfirst($this->_app->router->method());
+			$parameters = $this->_app->router->parameters();
 
 			//Enforcing Controller name
 			$controller = rtrim($controller,'_C');
@@ -104,7 +105,7 @@ class Loader implements Singelton{
 				require_once CONTROLLER_PATH . '/' . $controller . '.php';
 				//Loading Class File
 				if(class_exists($controller)){
-					$controller_class = new $controller();
+					$controller_class = new $controller($this->_app);
 
 					//Calling class method
 					if(method_exists($controller_class,$method)){
@@ -129,7 +130,7 @@ class Loader implements Singelton{
 	 *
 	 * @return void
 	 */
-	public static function getInstance($app = null)
+	public static function getInstance($app = null) : Loader
 	{
 		if (self::$instance == null)
 		{

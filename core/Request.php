@@ -10,6 +10,7 @@ namespace Php7;
 // A singleton class to handle request.
 class Request {
 	private static $instance = null;
+	protected $_App;
 
 	private $_get = null;
 	private $_post = null;
@@ -22,8 +23,10 @@ class Request {
 	private $_uri;
 	private $_query_str;
 
-	private function __construct()
+	private function __construct(App $App)
 	{
+		$this->_App = $App;
+
 		$this->_get = $_GET;
 		$this->_post = $_POST;
 		$this->_request = $_REQUEST;
@@ -45,11 +48,11 @@ class Request {
 		unset($_GLOBAL);
 	}
 
-	public static function getInstance()
+	public static function getInstance(App $App) : Request
 	{
 		if (self::$instance == null)
 		{
-			self::$instance = new Request();
+			self::$instance = new Request($App);
 		}
 
 		return self::$instance;

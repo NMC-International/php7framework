@@ -8,23 +8,17 @@ use Php7;
  * Time: 2:14 PM
  */
 class Router{
-	static protected $instance;
+	static protected $_instance;
+	protected $_App;
 
 	private $_controller;
 	private $_method;
 	private $_parameters;
 	private $_uri;
-	private $_loader = null;
-	private $_config;
 
-	private function __construct()
+	private function __construct(App $App)
 	{
-
-	    if($this->_loader == null){
-	        $this->_loader = Loader::getInstance();
-
-	        $this->_config = $this->_loader->config('router');
-        }
+		$this->_App = $App;
 
 		$this->_uri = ltrim($_SERVER['REQUEST_URI'],'/');
 		$part  = explode('/',$this->_uri,3);
@@ -32,8 +26,8 @@ class Router{
 		$c = count($part);
 		switch ($c){
 			case 1:
-				$part[0] == '' ? $this->_controller = $this->_config['default_controller'] : $this->_controller = $part[0];
-				$this->_method = $this->_config['default_method'];
+				$part[0] == '' ? $this->_controller = $this->_App->config['default_controller'] : $this->_controller = $part[0];
+				$this->_method = $this->_App->config['default_method'];
 				$this->_parameters = null;
 				break;
 			case 2:
@@ -49,25 +43,25 @@ class Router{
 		}
 	}
 
-	public static function getInstance()
+	public static function getInstance($App) : Router
 	{
-		if (self::$instance == null)
+		if (self::$_instance == null)
 		{
-			self::$instance = new Router();
+			self::$_instance = new Router($App);
 		}
 
-		return self::$instance;
+		return self::$_instance;
 	}
 
-	public function controller(){
+	public function controller() : string{
 		return $this->_controller;
 	}
 
-	public function method(){
+	public function method() : ?string {
 		return $this->_method;
 	}
 
-	public function parameters(){
+	public function parameters() : ?string{
 		return $this->_parameters;
 	}
 }

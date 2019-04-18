@@ -48,7 +48,6 @@ Class App implements Singelton
     private static $_instance = null;
 
     public $load = null;    //Loader Class
-    public $request = null; //Request Class
     public $config = array(); //Hold all configuration
 
     /**
@@ -60,8 +59,8 @@ Class App implements Singelton
         include_once CORE_PATH . '/' . 'Loader.php';
         $this->load = Loader::getInstance($this);
 
-        //Load the request Class
-        //$this->request =  $this->load->core('request');
+        //Loading Controller Main Class
+        $this->load->core('Controller');
     }
 
     /**
@@ -69,7 +68,7 @@ Class App implements Singelton
      * 
      * @return App Class
      */
-    public static function getInstance($app = null)
+    public static function getInstance($app = null) : App
     {
         if (self::$_instance === null ) {
             self::$_instance = new App();
