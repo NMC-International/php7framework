@@ -29,8 +29,13 @@ require_once '../config/paths.inc.php';
 
 //The main Loader Class
 require_once CORE_PATH . '/' . 'App.php';
+
 $App = App::getInstance();
-$App2 = App::getInstance();
+
+$request = $App->load->core('request');
+$router = $App->load->core('router');
+
+var_dump($App);
 
 
 

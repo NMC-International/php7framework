@@ -1,18 +1,33 @@
 <?php
+/**
+ * This singleton class will be the loader of all other files
+ * php version 7.2.10
+ * 
+ * @category Core_File
+ * @package  Php7
+ * @author   Engr. Syed Rowshan Ali <engr.rowshan@gmail.com>
+ * @license  https://www.gnu.org/licenses/gpl.txt GNU/GPLv3
+ * @link     https://nmcint.com
+ */
+
 namespace Php7;
 use Php7;
 
 /**
- * Created by PhpStorm.
- * User: Engr. Syed Rowshan Ali
- * Date: 15-Apr-19
- * Time: 2:14 PM
- * This class will be used to load controller, model and view
+ * The loader class of the apllication
+ * 
+ * @category Class
+ * @package  Php7
+ * @author   Engr. Syed Rowshan Ali <engr.rowshan@gmail.com>
+ * @license  https://www.gnu.org/licenses/gpl.txt GNU/GPLv3
+ * @link     https://nmcint.com
  */
-class Loader{
+class Loader implements Singelton{
 	static protected $instance;     //Singleton Instance
+	protected $_app;				//DI app class
+
 	private $_router;               //Router to the Class
-	private $_error;             //Error to the class
+	private $_error;             	//Error to the class
 	private $_core = array();
 	private $_config = array();
 
@@ -29,14 +44,14 @@ class Loader{
 		//$app = App::getInstance();
 
 
-        if( ! in_array($config_file_name,$this->_config)){
-            $config_path = CONFIG_PATH . '/' . strtolower($config_file_name).'.inc.php';
-            if(file_exists($config_path)){
-				include $config_path;
-				$app->config = array_merge($config);
-				return;
-            }
-        }
+        // if( ! in_array($config_file_name,$this->_config)){
+        //     $config_path = CONFIG_PATH . '/' . strtolower($config_file_name).'.inc.php';
+        //     if(file_exists($config_path)){
+		// 		include $config_path;
+		// 		$app->config = array_merge($config);
+		// 		return;
+        //     }
+        // }
     }
 
     /**
@@ -45,16 +60,17 @@ class Loader{
      * This function will load core classes from Core Folder
      */
     public function core($core,$config = true){
-		if($config){
-			$this->config($core);
-		}
+		// if($config){
+		// 	$this->config($core);
+		// }
 
         if( ! in_array($core,$this->_core)){
             $core_path = CORE_PATH . '/' . ucfirst($core).'.php';
             if(file_exists($core_path)){
 				require_once $core_path;
 				$classname = __NAMESPACE__ . '\\' . ucfirst($core);
-                return  $classname::getInstance();
+				$this->_app->{$core} = $classname::getInstance($this->_app);
+                return $this->_app->{$core};
             }
         }
     }
@@ -105,11 +121,20 @@ class Loader{
 		}
 	}
 
-	public static function getInstance()
+	
+	/**
+	 * getInstance
+	 *
+	 * @param  mixed $app
+	 *
+	 * @return void
+	 */
+	public static function getInstance($app = null)
 	{
 		if (self::$instance == null)
 		{
 			self::$instance = new Loader();
+			self::$instance->_app = $app;
 		}
 		return self::$instance;
 	}
